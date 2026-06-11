@@ -444,16 +444,21 @@
   /* Combo result */
   .combo-result {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 12px;
     margin-top: 20px;
     width: 100%;
   }
   .combo-item {
+    flex: 1;
+    min-width: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 16px;
-    padding: 20px;
+    text-align: center;
+    gap: 10px;
+    padding: 16px 8px;
     background: var(--glass-bg);
     backdrop-filter: blur(40px) saturate(2);
     -webkit-backdrop-filter: blur(40px) saturate(2);
@@ -468,10 +473,9 @@
     content: '';
     position: absolute;
     left: 0;
+    right: 0;
     top: 0;
-    bottom: 0;
-    width: 4px;
-    border-radius: 2px;
+    height: 3px;
     background: var(--accent);
     opacity: 0.5;
   }
@@ -479,15 +483,15 @@
   .combo-item--side::before { background: oklch(0.65 0.19 42); }
   .combo-item--drink::before { background: oklch(0.68 0.12 195); }
   .combo-item__icon {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--radius-md);
     background: oklch(0.97 0.003 106);
     border: 1px solid oklch(0.92 0.005 106);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 26px;
     flex-shrink: 0;
   }
   .combo-item__content {
