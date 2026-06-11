@@ -247,6 +247,7 @@ body {
   50% { background-position: -200% 0; }
 }
 .result__bg-img {
+  display: none;
   position: absolute;
   inset: 0;
   border-radius: var(--radius-lg);
@@ -952,7 +953,7 @@ body {
       <div class="rarity-glow" id="rarityGlow"></div>
       <div class="spark-burst" id="sparkBurst"></div>
       <div class="result__card" id="resultCard">
-        <img class="result__bg-img" id="resultBgImg" src="" alt="" aria-hidden="true">
+        <img class="result__bg-img" id="resultBgImg" alt="" aria-hidden="true">
         <div class="result__rarity" id="resultRarity"></div>
         <div class="result__image-wrap" id="resultImageWrap">
           <span id="resultEmoji" style="display:none"></span>
@@ -1342,7 +1343,7 @@ body {
     resultImageWrap.style.display = '';
     resultRarity.className = 'result__rarity';
     resultRarity.textContent = '';
-    if (resultBgImg) resultBgImg.src = '';
+    if (resultBgImg) { resultBgImg.src = ''; resultBgImg.style.display = 'none'; }
   }
 
   function getDesc(name) {
