@@ -1011,6 +1011,22 @@ body {
     for (const d of list) DISH_CATEGORY[d] = cat;
   }
 
+  const CATEGORY_IMAGES = {
+    '川湘菜': 'images/card-川湘菜.png',
+    '米饭菜': 'images/card-米饭菜.png',
+    '面食': 'images/card-面食.png',
+    '日韩': 'images/card-日韩.png',
+    '东南亚': 'images/card-东南亚.png',
+    '西式快餐': 'images/card-西式快餐.png',
+    '火锅串串': 'images/card-火锅串串.png',
+    '烧烤小吃': 'images/card-烧烤小吃.png',
+    '轻食沙拉': 'images/card-轻食沙拉.png',
+    '汤品粥类': 'images/card-汤品粥类.png',
+    '饺子馄饨': 'images/card-饺子馄饨.png',
+    '地方特色': 'images/card-地方特色.png',
+    '甜点饮品': 'images/card-甜点饮品.png'
+  };
+
   const STAPLE_CATS = new Set(['川湘菜','米饭菜','面食','日韩','西式快餐','东南亚','火锅串串','地方特色','饺子馄饨']);
   const SIDE_CATS = new Set(['烧烤小吃','轻食沙拉','汤品粥类']);
   const DRINK_CATS = new Set(['甜点饮品']);
@@ -1212,6 +1228,10 @@ body {
     resultName.textContent = name;
     resultDesc.textContent = desc;
     setCardRarity(rarity);
+    // Set card background image by category
+    const cat = DISH_CATEGORY[name];
+    resultBgImg.src = cat ? 'images/card-'+cat+'.png' : '';
+    resultBgImg.style.display = cat ? '' : 'none';
 
     if (animate) {
       resultCard.classList.remove('result__card--rolling', 'result__card--reveal');
@@ -1232,6 +1252,11 @@ body {
     resultImageWrap.style.display = 'none';
     comboResult.style.display = 'flex';
     resultCard.classList.remove('result__card--rolling', 'result__card--reveal');
+    // Set bg image based on main dish (first staple item)
+    const mainItem = items.find(i => i.role === '主食') || items[0];
+    const comboCat = DISH_CATEGORY[mainItem.name];
+    resultBgImg.src = comboCat ? 'images/card-'+comboCat+'.png' : '';
+    resultBgImg.style.display = comboCat ? '' : 'none';
     rarityGlow.classList.remove('rarity-glow--show');
     if (animate) {
       void resultCard.offsetWidth;
@@ -1264,6 +1289,7 @@ body {
     resultImageWrap.style.display = '';
     resultRarity.className = 'result__rarity';
     resultRarity.textContent = '';
+    resultBgImg.src = '';
   }
 
   function getDesc(name) {
