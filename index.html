@@ -1100,10 +1100,6 @@ body {
   const appEl = $('#app');
 
   function getEmoji(name) {
-    const last = name.slice(-2);
-    if (/[\\u{1F000}-\\u{1FFFF}]/u.test(last) || /[\\u{2600}-\\u{27BF}]/u.test(last)) {
-      return last.match(/[\\u{1F000}-\\u{1FFFF}\\u{2600}-\\u{27BF}\\u{FE00}-\\u{FEFF}]/gu)?.slice(-1)[0] || '';
-    }
     for (const [key, emoji] of Object.entries(CATEGORY_EMOJI)) {
       if (name.includes(key)) return emoji;
     }
