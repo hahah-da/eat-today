@@ -637,19 +637,15 @@ body {
 /* Combo result - gacha multi-pull */
 /* Combo type label */
 .combo-label {
-  width: 100%;
-  max-width: 340px;
-  margin: 12px auto 0;
   text-align: center;
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: var(--gold);
   text-shadow: 0 0 20px rgba(240,192,96,0.5);
   animation: combo-label-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  position: relative;
-  z-index: 2;
+  margin: 16px 0;
 }
 @keyframes combo-label-in {
   from { opacity: 0; transform: translateY(-8px); }
@@ -976,6 +972,7 @@ body {
       <div class="result__card" id="resultCard">
         <img class="result__bg-img" id="resultBgImg" alt="" aria-hidden="true">
         <div class="result__rarity" id="resultRarity"></div>
+        <div class="combo-label" id="comboLabel" style="display:none"></div>
         <div class="result__image-wrap" id="resultImageWrap">
           <span id="resultEmoji" style="display:none"></span>
         </div>
@@ -984,7 +981,6 @@ body {
         <div class="result__placeholder" id="placeholder"><span class="placeholder__icon"></span><span>触摸命运之轮</span></div>
       </div>
     </div>
-    <div class="combo-label" id="comboLabel" style="display:none"></div>
     <div class="combo-result" id="comboResult" style="display:none"></div>
   </div>
 
@@ -1004,6 +1000,9 @@ body {
       <button class="filter-btn" data-key="饺子馄饨">饺子馄饨</button>
       <button class="filter-btn" data-key="地方特色">地方特色</button>
       <button class="filter-btn" data-key="甜点饮品">甜点饮品</button>
+      <button class="filter-btn" data-key="江西菜">江西菜</button>
+      <button class="filter-btn" data-key="衢州菜">衢州菜</button>
+      <button class="filter-btn" data-key="杭帮菜">杭帮菜</button>
     </div>
   </div>
 
@@ -1081,6 +1080,9 @@ body {
     '饺子馄饨': ['猪肉白菜饺','韭菜鸡蛋饺','三鲜水饺','虾仁水饺','酸汤水饺','抄手','红油抄手','云吞面','小笼包','生煎包','煎饼果子','鸡蛋灌饼','手抓饼','肉夹馍','凉皮'],
     '地方特色': ['沙县小吃','肠粉','煲仔饭腊味','叉烧包','虾饺','烧卖','凤爪','糯米鸡','流沙包'],
     '甜点饮品': ['奶茶','水果茶','柠檬茶','冰美式','拿铁','双皮奶','杨枝甘露','冰淇淋','酸奶','椰子冻'],
+    '江西菜': ['藜蒿炒腊肉','三杯鸡','瓦罐煨汤','鄱湖胖鱼头','井冈山烟笋','赣南小炒鱼','永和豆腐','萍乡小炒肉','余干辣椒炒肉','莲花血鸭','南昌炒粉','兴国米粉鱼','临川牛杂','南昌白糖糕'],
+    '衢州菜': ['衢州鸭头','开化青蛳','龙游发糕','廿八都豆腐','衢州烤饼','常山贡面','衢州兔头','衢州鱼头','江山白鹅','江山碗窑','衢味辣煲'],
+    '杭帮菜': ['西湖醋鱼','龙井虾仁','叫花鸡','宋嫂鱼羹','干炸响铃','杭州酱鸭','片儿川','葱包烩','定胜糕','桂花糖藕','西湖牛肉羹','杭州卤鸭','猫耳朵','西湖莼菜汤'],
   };
 
   const DISH_CATEGORY = {};
@@ -1101,10 +1103,13 @@ body {
     '汤品粥类': 'images/card-soup.png',
     '饺子馄饨': 'images/card-dumpling.png',
     '地方特色': 'images/card-local.png',
-    '甜点饮品': 'images/card-drink.png'
+    '甜点饮品': 'images/card-drink.png',
+    '江西菜': 'images/card-jiangxi.png',
+    '衢州菜': 'images/card-quzhou.png',
+    '杭帮菜': 'images/card-hangbang.png'
   };
 
-  const STAPLE_CATS = new Set(['川湘菜','米饭菜','面食','日韩','西式快餐','东南亚','火锅串串','地方特色','饺子馄饨']);
+  const STAPLE_CATS = new Set(['川湘菜','米饭菜','面食','日韩','西式快餐','东南亚','火锅串串','地方特色','饺子馄饨','江西菜','衢州菜','杭帮菜']);
   const SIDE_CATS = new Set(['烧烤小吃','轻食沙拉','汤品粥类']);
   const DRINK_CATS = new Set(['甜点饮品']);
 
@@ -1298,6 +1303,7 @@ body {
     resultDesc.style.display = '';
     resultImageWrap.style.display = '';
     comboResult.style.display = 'none';
+    comboLabel.style.display = 'none';
     resultEmoji.textContent = emoji;
     resultName.textContent = name;
     resultDesc.textContent = desc;
@@ -1337,6 +1343,9 @@ body {
       '饺子馄饨':['包罗万象','皮薄馅大','面点派对','一饺封神'],
       '地方特色':['地道风味','家乡味道','南北风味','特色之行'],
       '甜点饮品':['甜蜜暴击','糖分补给','下午茶光','快乐甜品'],
+      '江西菜':  ['赣味十足','辣中带鲜','瓦罐飘香','赣鄱风情'],
+      '衢州菜':  ['衢味鲜辣','三头一掌','浙西风味','山城辣味'],
+      '杭帮菜':  ['江南雅韵','清淡鲜美','西湖风情','杭城味道'],
     };
     const mainItem = items.find(i => i.role === '主食') || items[0];
     const cat = DISH_CATEGORY[mainItem.name] || 'null';
