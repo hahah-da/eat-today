@@ -170,12 +170,14 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 12px 0 8px;
+  margin: 18px 0 8px;
   perspective: 1000px;
 }
 .result__wrapper {
   width: 100%;
+  max-width: 340px;
   position: relative;
+  margin: 0 auto;
 }
 .result__card {
   width: 100%;
@@ -185,7 +187,7 @@ body {
   -webkit-backdrop-filter: blur(40px) saturate(1.8);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-lg);
-  padding: 28px 24px;
+  padding: 32px 24px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -344,10 +346,50 @@ body {
   transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .result__placeholder {
-  color: var(--text-tertiary);
-  font-size: 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: placeholder-pulse 2.5s ease-in-out infinite;
+}
+.placeholder__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,107,53,0.1);
+  border: 1.5px dashed rgba(255,107,53,0.25);
+  position: relative;
+}
+.placeholder__icon::before,
+.placeholder__icon::after {
+  content: '';
+  position: absolute;
+  background: rgba(255,107,53,0.5);
+  border-radius: 2px;
+}
+.placeholder__icon::before {
+  width: 2px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.placeholder__icon::after {
+  width: 12px;
+  height: 2px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@keyframes placeholder-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
 }
 
 /* Spark burst overlay */
@@ -909,7 +951,7 @@ body {
     <div class="result__wrapper" id="resultWrapper">
       <div class="rarity-glow" id="rarityGlow"></div>
       <div class="spark-burst" id="sparkBurst"></div>
-      <div class="result__card result__card--N" id="resultCard">
+      <div class="result__card" id="resultCard">
         <img class="result__bg-img" id="resultBgImg" src="" alt="" aria-hidden="true">
         <div class="result__rarity" id="resultRarity"></div>
         <div class="result__image-wrap" id="resultImageWrap">
@@ -917,7 +959,7 @@ body {
         </div>
         <div class="result__name" id="resultName" style="display:none"></div>
         <div class="result__desc" id="resultDesc" style="display:none"></div>
-        <div class="result__placeholder" id="placeholder">✦ 触摸命运之轮 ✦</div>
+        <div class="result__placeholder" id="placeholder"><span class="placeholder__icon"></span><span>触摸命运之轮</span></div>
       </div>
     </div>
     <div class="combo-result" id="comboResult" style="display:none"></div>
@@ -1289,8 +1331,7 @@ body {
   }
 
   function resetResult() {
-    resultCard.classList.remove('result__card--rolling', 'result__card--reveal');
-    resultCard.classList.add('result__card--N');
+    resultCard.classList.remove('result__card--rolling', 'result__card--reveal', 'result__card--N', 'result__card--R', 'result__card--SR', 'result__card--SSR');
     rarityGlow.classList.remove('rarity-glow--show');
     sparkBurst.innerHTML = '';
     comboResult.style.display = 'none';
