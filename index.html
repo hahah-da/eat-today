@@ -635,6 +635,27 @@ body {
 }
 
 /* Combo result - gacha multi-pull */
+/* Combo type label */
+.combo-label {
+  width: 100%;
+  max-width: 340px;
+  margin: 12px auto 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(240,192,96,0.5);
+  animation: combo-label-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  position: relative;
+  z-index: 2;
+}
+@keyframes combo-label-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .combo-result {
   display: flex;
   flex-direction: row;
@@ -963,6 +984,7 @@ body {
         <div class="result__placeholder" id="placeholder"><span class="placeholder__icon"></span><span>触摸命运之轮</span></div>
       </div>
     </div>
+    <div class="combo-label" id="comboLabel" style="display:none"></div>
     <div class="combo-result" id="comboResult" style="display:none"></div>
   </div>
 
@@ -1126,6 +1148,7 @@ body {
   const resultName = $('#resultName');
   const resultDesc = $('#resultDesc');
   const resultImageWrap = $('#resultImageWrap');
+  const comboLabel = $('#comboLabel');
   const comboResult = $('#comboResult');
   const tagCloud = $('#tagCloud');
   const dishCount = $('#dishCount');
@@ -1297,6 +1320,30 @@ body {
     }
   }
 
+  function getComboLabel(items) {
+    // Category-driven combo labels (4-6 chars)
+    const labelMap = {
+      'null':    ['命运之选','神秘套餐','随机搭配','今日限定'],
+      '川湘菜':  ['麻辣盛宴','火辣江湖','巴蜀风情','无辣不欢'],
+      '米饭菜':  ['米饭狂欢','碳水快乐','干饭时刻','下饭神器'],
+      '面食':    ['面面俱到','碳水炸弹','嗦面时光','粉面盛宴'],
+      '日韩':    ['和风物语','韩流来袭','精致小食','日韩之旅'],
+      '西式快餐':['热量爆棚','快乐套餐','西式狂欢','洋气一餐'],
+      '东南亚':  ['南洋风情','热带风味','异域奇遇','酸辣开胃'],
+      '火锅串串':['红油滚滚','热辣滚烫','沸腾人生','串串江湖'],
+      '烧烤小吃':['烟火人间','深夜食堂','街头风味','撸串时刻'],
+      '轻食沙拉':['轻盈时光','清新一餐','轻食主义','活力沙拉'],
+      '汤品粥类':['暖心暖胃','滋补时光','温润一餐','暖汤好粥'],
+      '饺子馄饨':['包罗万象','皮薄馅大','面点派对','一饺封神'],
+      '地方特色':['地道风味','家乡味道','南北风味','特色之行'],
+      '甜点饮品':['甜蜜暴击','糖分补给','下午茶光','快乐甜品'],
+    };
+    const mainItem = items.find(i => i.role === '主食') || items[0];
+    const cat = DISH_CATEGORY[mainItem.name] || 'null';
+    const pool = labelMap[cat] || labelMap['null'];
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
   function showComboResult(items, animate) {
     placeholder.style.display = 'none';
     resultEmoji.style.display = 'none';
@@ -1304,6 +1351,8 @@ body {
     resultDesc.style.display = 'none';
     resultImageWrap.style.display = 'none';
     comboResult.style.display = 'flex';
+    comboLabel.style.display = '';
+    comboLabel.textContent = '◆ ' + getComboLabel(items) + ' ◆';
     resultCard.classList.remove('result__card--rolling', 'result__card--reveal');
     // Set bg image based on main dish (first staple item)
     const mainItem = items.find(i => i.role === '主食') || items[0];
@@ -1335,6 +1384,7 @@ body {
     resultCard.classList.remove('result__card--rolling', 'result__card--reveal', 'result__card--N', 'result__card--R', 'result__card--SR', 'result__card--SSR');
     rarityGlow.classList.remove('rarity-glow--show');
     sparkBurst.innerHTML = '';
+    comboLabel.style.display = 'none';
     comboResult.style.display = 'none';
     placeholder.style.display = '';
     resultEmoji.style.display = 'none';
