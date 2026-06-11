@@ -244,6 +244,17 @@ body {
   0%, 100% { background-position: 200% 0; }
   50% { background-position: -200% 0; }
 }
+.result__bg-img {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+}
 
 .result__card--rolling {
   animation: card-shake 0.12s ease-in-out infinite;
@@ -899,6 +910,7 @@ body {
       <div class="rarity-glow" id="rarityGlow"></div>
       <div class="spark-burst" id="sparkBurst"></div>
       <div class="result__card result__card--N" id="resultCard">
+        <img class="result__bg-img" id="resultBgImg" src="" alt="" aria-hidden="true">
         <div class="result__rarity" id="resultRarity"></div>
         <div class="result__image-wrap" id="resultImageWrap">
           <span id="resultEmoji" style="display:none"></span>
@@ -1230,8 +1242,10 @@ body {
     setCardRarity(rarity);
     // Set card background image by category
     const cat = DISH_CATEGORY[name];
-    resultBgImg.src = cat ? 'images/card-'+cat+'.png' : '';
-    resultBgImg.style.display = cat ? '' : 'none';
+    if (resultBgImg) {
+      resultBgImg.src = cat ? 'images/card-'+cat+'.png' : '';
+      resultBgImg.style.display = cat ? '' : 'none';
+    }
 
     if (animate) {
       resultCard.classList.remove('result__card--rolling', 'result__card--reveal');
@@ -1255,8 +1269,10 @@ body {
     // Set bg image based on main dish (first staple item)
     const mainItem = items.find(i => i.role === '主食') || items[0];
     const comboCat = DISH_CATEGORY[mainItem.name];
-    resultBgImg.src = comboCat ? 'images/card-'+comboCat+'.png' : '';
-    resultBgImg.style.display = comboCat ? '' : 'none';
+    if (resultBgImg) {
+      resultBgImg.src = comboCat ? 'images/card-'+comboCat+'.png' : '';
+      resultBgImg.style.display = comboCat ? '' : 'none';
+    }
     rarityGlow.classList.remove('rarity-glow--show');
     if (animate) {
       void resultCard.offsetWidth;
@@ -1289,7 +1305,7 @@ body {
     resultImageWrap.style.display = '';
     resultRarity.className = 'result__rarity';
     resultRarity.textContent = '';
-    resultBgImg.src = '';
+    if (resultBgImg) resultBgImg.src = '';
   }
 
   function getDesc(name) {
