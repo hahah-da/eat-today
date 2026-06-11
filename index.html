@@ -1184,6 +1184,10 @@ body {
       if (raw) { dishes = JSON.parse(raw); if (!Array.isArray(dishes) || dishes.length === 0) throw new Error('empty'); }
       else dishes = Object.values(DEFAULT_CATEGORIES).flat();
     } catch { dishes = Object.values(DEFAULT_CATEGORIES).flat(); }
+    // Merge new dishes from DEFAULT_CATEGORIES into existing localStorage data
+    const allDefaults = Object.values(DEFAULT_CATEGORIES).flat();
+    const existing = new Set(dishes);
+    for (const d of allDefaults) { if (!existing.has(d)) dishes.push(d); }
     try { const rawH = localStorage.getItem('eat-today-history'); if (rawH) history = JSON.parse(rawH); } catch { history = []; }
     try { const rawF = localStorage.getItem('eat-today-favs'); if (rawF) favDishes = new Set(JSON.parse(rawF)); } catch { favDishes = new Set(); }
     try { const rawH2 = localStorage.getItem('eat-today-hidden'); if (rawH2) hiddenDishes = new Set(JSON.parse(rawH2)); } catch { hiddenDishes = new Set(); }
